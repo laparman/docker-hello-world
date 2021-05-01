@@ -10,13 +10,11 @@ podTemplate(label: 'docker-build',
       name: 'docker',
       image: 'docker',
       command: 'cat',
-      ttyEnabled: true,
-      securityContext:
-        runAsUser: 0
+      ttyEnabled: true
     ),
   ],
   volumes: [ 
-    hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'), 
+    hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock') 
   ]
 ) {
     node('docker-build') {
@@ -32,7 +30,7 @@ podTemplate(label: 'docker-build',
         stage('Build'){
             container('docker'){
                 script {
-                    appImage = docker.build("wonjoyoo/node-hello-world")
+                      appImage = docker.build("wonjoyoo/node-hello-world")
                 }
             }
         }
