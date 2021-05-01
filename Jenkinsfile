@@ -30,7 +30,7 @@ spec:
         git 'https://github.com/laparman/docker-hello-world'
         container(name: 'kaniko') {
             sh '''
-            /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=884783344722.dkr.ecr.ap-northeast-2.amazonaws.com/sample-msa:v$BUILD_NUMBER
+            /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=public.ecr.aws/f7u6y6e3/msa/sample-msa:v$BUILD_NUMBER
             '''
         }
       }
