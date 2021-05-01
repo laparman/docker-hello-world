@@ -18,7 +18,7 @@ podTemplate(label: 'docker-build',
   ]
 ) {
     node('docker-build') {
-        def dockerHubCred = wonjoyoo
+        def dockerHubCred = "wonjoyoo"
         def appImage
         
         stage('Checkout'){
