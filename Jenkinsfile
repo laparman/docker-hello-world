@@ -10,7 +10,9 @@ podTemplate(label: 'docker-build',
       name: 'docker',
       image: 'docker',
       command: 'cat',
-      ttyEnabled: true
+      ttyEnabled: true,
+      securityContext:
+        runAsUser: 0
     ),
   ],
   volumes: [ 
