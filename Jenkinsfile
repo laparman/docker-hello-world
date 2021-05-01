@@ -29,9 +29,9 @@ podTemplate(label: 'docker-build',
         
         stage('Build'){
             container('docker'){
-                script {
-                      appImage = docker.build("wonjoyoo/node-hello-world")
-                }
+                sh """
+                  docker build -t wonjoyoo/node-hello-world/$BUILD_NUMBER .
+                """
             }
         }
         
