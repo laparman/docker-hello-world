@@ -1,61 +1,39 @@
-podTemplate(label: 'docker-build', 
-  containers: [
-    containerTemplate(
-      name: 'git',
-      image: 'alpine/git',
-      command: 'cat',
-      ttyEnabled: true
-    ),
-    containerTemplate(
-      name: 'docker',
-      image: 'docker',
-      command: 'cat',
-      ttyEnabled: true
-    ),
-  ],
-  volumes: [ 
-    hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/run/containerd/containerd.sock') 
-  ]
-) {
-    node('docker-build') {
-        def dockerHubCred = "wonjoyoo"
-        def appImage
-        
-        stage('Checkout'){
-            container('git'){
-                checkout scm
-            }
-        }
-        
-        stage('Build'){
-            container('docker'){
-                sh """
-                  docker build -t wonjoyoo/node-hello-world/$BUILD_NUMBER .
-                """
-            }
-        }
-        
-        stage('Test'){
-            container('docker'){
-                script {
-                    appImage.inside {
-                        sh 'npm install'
-                        sh 'npm test'
-                    }
-                }
-            }
-        }
-
-        stage('Push'){
-            container('docker'){
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', dockerHubCred){
-                        appImage.push("${env.BUILD_NUMBER}")
-                        appImage.push("latest")
-                    }
-                }
-            }
-        }
+pipeline {
+  agent {
+    kubernetes {
+      //cloud 'kubernetes'
+      yaml """
+kind: Pod
+metadata:
+  name: kaniko
+spec:
+  containers:
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:debug-539ddefcae3fd6b411a95982a830d987f4214251
+    imagePullPolicy: Always
+    command:
+    - cat
+    tty: true
+    volumeMounts:
+      - name: docker-config
+        mountPath: /kaniko/.docker
+  volumes:
+    - name: docker-config
+      configMap:
+        name: docker-config
+"""
     }
-    
+  }
+  stages {
+    stage('Build with Kaniko') {
+      steps {
+        git 'https://github.com/prabhatsharma/sample-microservice'
+        container(name: 'kaniko') {
+            sh '''
+            /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=https://registry.hub.docker.com/u/wonjoyoo/sample-msa:v$BUILD_NUMBER
+            '''
+        }
+      }
+    }
+  }
 }
