@@ -55,6 +55,7 @@ spec:
              sh("""
                #!/usr/bin/env bash
                set +x
+               ls -al
                export GIT_SSH_COMMAND="ssh -oStrictHostKeyChecking=no"
                git config --global user.email "wonjoyoo@gmail.com"
                git checkout master
