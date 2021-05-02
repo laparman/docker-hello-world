@@ -42,14 +42,27 @@ spec:
     }
     stage('Commit change to Argo'){
       steps{
-        git 'https://github.com/laparman/k8s'
         container(name: 'argo') {
-          sh '''
-            cd env/dev && kustomize edit set image wonjoyoo/tkg:${BUILD_NUMBER}
-            git config --global user.email "wonjoyoo@gmail.com"
-            git commit -a -m 'update image tag'
-            git push --set-upstream origin master
-          '''
+          checkout([$class: 'GitSCM',
+                        branches: [[name: '*/main' ]],
+                        extensions: scm.extensions,
+                        userRemoteConfigs: [[
+                            url: 'git@github.com:laparman/k8s.git',
+                            credentialsId: 'jenkins-ssh-private',
+                        ]]
+                ])
+           sshagent(credentials: ['jenkins-ssh-private']){
+             sh("""
+               #!/usr/bin/env bash
+               set +x
+               export GIT_SSH_COMMAND="ssh -oStrictHostKeyChecking=no"
+               git config --global user.email "wonjoyoo@gmail.com"
+               git checkout main
+               cd env/dev && kustomize edit set image wonjoyoo/tkg:${BUILD_NUMBER}
+               git commit -a -m 'update image tag'
+               git push --set-upstream origin master
+              """)
+           }
         }
       }
     }
