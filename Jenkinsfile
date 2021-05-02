@@ -46,15 +46,6 @@ spec:
         }
       }
     }
-    stage('Change commit to Argo'){
-      steps{
-        git 'https://github.com/laparman/docker-hello-world'
-        container(name: 'argo') {
-          sh '''
-            ls -al
-          '''
-        }
-      }
-    }
+    
   }
 }
