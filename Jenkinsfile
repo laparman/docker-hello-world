@@ -46,7 +46,7 @@ spec:
         container(name: 'argo') {
           sh '''
             cd env/dev && kustomize edit set image wonjoyoo/tkg:${BUILD_NUMBER}
-            ls -al
+            git config --global user.email "wonjoyoo@gmail.com"
             git commit -a -m 'update image tag'
             git push
           '''
