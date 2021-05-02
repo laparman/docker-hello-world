@@ -45,9 +45,9 @@ spec:
         git 'https://github.com/laparman/k8s'
         container(name: 'argo') {
           sh '''
-            cd env/dev
-            kustomize edit set image wonjoyoo/tkg:${BUILD_NUMBER}
-            git commit -m 'update image tag'
+            cd env/dev && kustomize edit set image wonjoyoo/tkg:${BUILD_NUMBER}
+            ls -al
+            git commit -a -m 'update image tag'
             git push
           '''
         }
