@@ -55,11 +55,13 @@ spec:
              sh("""
                #!/usr/bin/env bash
                set +x
-               ls -al
                export GIT_SSH_COMMAND="ssh -oStrictHostKeyChecking=no"
                git config --global user.email "wonjoyoo@gmail.com"
                git checkout master
-               cd env/dev && kustomize edit set image wonjoyoo/tkg:${BUILD_NUMBER}
+               ls -al
+               cd env/dev 
+               kustomize edit set image wonjoyoo/tkg:${BUILD_NUMBER}
+               ls -al
                git commit -a -m 'update image tag'
                git push --set-upstream origin master
               """)
