@@ -1,3 +1,17 @@
+podTemplate(label: 'docker-build',
+  containers: [
+    containerTemplate(
+      name: 'argo',
+      image: 'argoproj/argo-cd-ci-builder:latest',
+      command: 'cat',
+      ttyEnabled: true
+    ),
+  ],
+  volumes: [ 
+    hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'), 
+  ]
+)
+
 pipeline {
   agent {
     kubernetes {
