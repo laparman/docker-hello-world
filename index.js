@@ -10,6 +10,16 @@ app.get('/version', (req, res) => {
   res.send(process.env.VERSION || 'No version')
 })
 
+app.get('/hang', (req, res) => {
+  var startDate = new Date();
+  for(int i=0;i<100000000;i++){
+    var endDate   = new Date();
+    var dur = (endDate.getTime() - startDate.getTime()) / 1000;
+    if(dur > 30 ) break;
+  }
+  res.send("30 sec wait done");
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`)
 })
