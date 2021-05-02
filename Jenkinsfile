@@ -45,7 +45,9 @@ spec:
         git 'https://github.com/laparman/k8s'
         container(name: 'argo') {
           sh '''
-            ls -al
+            pwd
+            ls -al ../
+            kustomize
           '''
         }
       }
