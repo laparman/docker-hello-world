@@ -35,7 +35,7 @@ spec:
         git 'https://github.com/laparman/docker-hello-world'
         container(name: 'kaniko') {
             sh '''
-            /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=wonjoyoo/tkg:v$BUILD_NUMBER
+            /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=wonjoyoo/tkg:${BUILD_NUMBER}
             '''
         }
       }
