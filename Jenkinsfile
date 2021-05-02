@@ -44,7 +44,7 @@ spec:
       steps{
         container(name: 'argo') {
           checkout([$class: 'GitSCM',
-                        branches: [[name: '*/main' ]],
+                        branches: [[name: '*/master' ]],
                         extensions: scm.extensions,
                         userRemoteConfigs: [[
                             url: 'git@github.com:laparman/k8s.git',
@@ -57,7 +57,7 @@ spec:
                set +x
                export GIT_SSH_COMMAND="ssh -oStrictHostKeyChecking=no"
                git config --global user.email "wonjoyoo@gmail.com"
-               git checkout main
+               git checkout master
                cd env/dev && kustomize edit set image wonjoyoo/tkg:${BUILD_NUMBER}
                git commit -a -m 'update image tag'
                git push --set-upstream origin master
