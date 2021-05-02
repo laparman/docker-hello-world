@@ -1,14 +1,3 @@
-podTemplate(label: 'docker-build',
-  containers: [
-    containerTemplate(
-      name: 'argo',
-      image: 'argoproj/argo-cd-ci-builder:latest',
-      command: 'cat',
-      ttyEnabled: true
-    ),
-  ]
-)
-
 pipeline {
   agent {
     kubernetes {
@@ -32,6 +21,16 @@ spec:
     - name: docker-config
       configMap:
         name: docker-config
+kind: Pod
+metadata:
+  name: argo
+spec:
+  containers:
+  - name: argo
+    image: argoproj/argo-cd-ci-builder:latest
+    command:
+    - cat
+    tty: true
 """
     }
   }
@@ -43,6 +42,16 @@ spec:
             sh '''
             /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=wonjoyoo/tkg:v$BUILD_NUMBER
             '''
+        }
+      }
+    }
+    stage('Change commit to Argo'){
+      steps{
+        git 'https://github.com/laparman/docker-hello-world'
+        container(name: 'argo') {
+          sh '''
+            ls -al
+          '''
         }
       }
     }
