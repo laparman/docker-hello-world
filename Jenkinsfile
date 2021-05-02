@@ -48,7 +48,7 @@ spec:
             cd env/dev && kustomize edit set image wonjoyoo/tkg:${BUILD_NUMBER}
             git config --global user.email "wonjoyoo@gmail.com"
             git commit -a -m 'update image tag'
-            git push
+            git push --set-upstream origin master
           '''
         }
       }
