@@ -16,7 +16,7 @@ app.get('/hang', (req, res) => {
   for(i=0;i<100000000;i++){
     var endDate  = new Date();
     var dur = (endDate.getTime() - startDate.getTime()) / 1000;
-    if(dur > 60 ) break;
+    if(dur > 1000 ) break;
   }
   res.send("30 sec wait done");
 })
