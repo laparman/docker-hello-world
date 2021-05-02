@@ -17,21 +17,15 @@ spec:
     volumeMounts:
       - name: docker-config
         mountPath: /kaniko/.docker
-  volumes:
-    - name: docker-config
-      configMap:
-        name: docker-config
----        
-kind: Pod
-metadata:
-  name: argo
-spec:
-  containers:
   - name: argo
     image: argoproj/argo-cd-ci-builder:latest
     command:
     - cat
     tty: true
+  volumes:
+    - name: docker-config
+      configMap:
+        name: docker-config
 """
     }
   }
