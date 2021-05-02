@@ -42,6 +42,7 @@ spec:
     }
     stage('Commit change to Argo'){
       steps{
+        git 'https://github.com/laparman/k8s'
         container(name: 'argo') {
           checkout([$class: 'GitSCM',
                         branches: [[name: '*/master' ]],
@@ -49,8 +50,8 @@ spec:
                         userRemoteConfigs: [[
                             url: 'git@github.com:laparman/k8s.git',
                             credentialsId: 'jenkins-ssh-private',
-                        ]]
-                ])
+                   ]]
+           ])
            sshagent(credentials: ['jenkins-ssh-private']){
              sh("""
                #!/usr/bin/env bash
