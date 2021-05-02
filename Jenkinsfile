@@ -21,6 +21,7 @@ spec:
     - name: docker-config
       configMap:
         name: docker-config
+---        
 kind: Pod
 metadata:
   name: argo
