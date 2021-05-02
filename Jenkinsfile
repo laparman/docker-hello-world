@@ -40,7 +40,7 @@ spec:
         }
       }
     }
-    stage('Change commit to Argo'){
+    stage('Commit change to Argo'){
       steps{
         git 'https://github.com/laparman/k8s'
         container(name: 'argo') {
