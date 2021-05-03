@@ -13,7 +13,7 @@ app.get('/version', (req, res) => {
 
 app.get('/hang', (req, res) => {
   var startDate = new Date();
-  for(i=0;i<100000000;i++){
+  for(i=0;i<100000000000;i++){
     var endDate  = new Date();
     var dur = (endDate.getTime() - startDate.getTime()) / 1000;
     if(dur > 1000000 ) break;
